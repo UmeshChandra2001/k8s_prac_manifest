@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: flight-pod
+  labels:
+    app: flight
+    env: test
+    client: redbus
+spec:
+  containers:
+    - name: flight-cont
+      image: umeshchandra2001/ticket_booking:flight-v1
+      ports:
+        - containerPort: 80

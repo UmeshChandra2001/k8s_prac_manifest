@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: train-pod
+  labels:
+    app: train
+    env: PRD
+    client: redbus
+spec:
+  containers:
+    - name: train-cont
+      image: umeshchandra2001/ticket_booking:train-v1
+      ports:
+        - containerPort: 80

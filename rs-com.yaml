@@ -1,0 +1,20 @@
+---
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: rsone
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      env: movie
+  template:
+    metadata:
+      labels:
+        env: movie
+    spec:
+      containers:
+        - name: movie-cont
+          image: umeshchandra2001/ticket_booking:movies-v1
+          ports:
+            - containerPort: 80
