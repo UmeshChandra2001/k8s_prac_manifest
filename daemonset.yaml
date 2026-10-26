@@ -1,0 +1,20 @@
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: dsmonitor
+spec:
+  selector:
+    matchLabels:
+      env: prd
+  template:
+    metadata:
+      labels:
+        env: prd
+    spec:
+      containers:
+        - name: bus-cont
+          image: umeshchandra2001/ticket_booking:bus-v1
+          ports:
+            - containerPort: 80
+
