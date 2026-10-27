@@ -1,0 +1,26 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cm-dply2
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      env: prd
+  template:
+    metadata:
+      labels:
+        env: prd
+    spec:
+      containers:
+        - name: pub-cont-1
+          image: umeshchandra2001/ticket_booking:bus-v1
+          ports:
+            - containerPort: 80
+          env:
+            - name: yaml-cm
+              valueFrom:
+                configMapKeyRef:
+                  name: yaml-cm
+                  key: AWS

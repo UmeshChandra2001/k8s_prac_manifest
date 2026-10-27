@@ -1,0 +1,27 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cmdply1
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      env: prd
+  template:
+    metadata:
+      labels:
+        env: prd
+    spec:
+      containers:
+        - name: pub-cont
+          image: umeshchandra2001/ticket_booking:bus-v1
+          ports:
+            - containerPort: 80
+          envFrom:
+            - configMapRef:
+                name: cm-1
+            - configMapRef:
+                name: cm-2
+            - configMapRef:
+                name: yaml-cm

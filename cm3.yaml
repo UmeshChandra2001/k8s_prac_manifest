@@ -1,8 +1,10 @@
+---
 apiVersion: v1
-kind: ConfigMap
+kind: ConfigMap 
 metadata:
-  name: cm-yaml
+  name: yaml-cm
 data:
   AWS: Amazon
-  AZURE: Microsoft
+  Azure: Microsoft
   GCP: Google
+
