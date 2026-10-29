@@ -1,0 +1,23 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: secret-deploy
+  namespace: i-test
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      env: prd
+  template:
+    metadata:
+      labels:
+        env: prd
+    spec:
+      imagePullSecrets:
+        - name: docker-cred
+      containers:
+        - name: pvt-bus
+          image: umeshchandra2001/pvt_repo1:bus-v1
+          ports:
+            - containerPort: 80
