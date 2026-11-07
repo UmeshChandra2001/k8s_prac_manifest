@@ -1,0 +1,31 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: startupprobe-pod             # Unique name of the Pod
+spec:
+  containers:
+    - name: cont1                    # Container name
+      image: nginx                   # Base container image
+      ports:
+        - containerPort: 80          # Exposed port inside the container
+      args:
+        - /bin/sh                    # Shell binary to execute commands
+        - -c                         # Pass command string to shell
+        - sleep 25; touch /tmp/started.txt; sleep 1000; # Simulates a slow 25-second boot
+      startupProbe:
+        exec:
+          command:
+            - cat                    # Command to check startup completion
+            - /tmp/started.txt       # File created only after initialization is complete
+        initialDelaySeconds: 5       # Wait 5 seconds after start before the first check
+        periodSeconds: 5             # Check every 5 seconds
+        timeoutSeconds: 5            # Probe times out if unresponsive for 5 seconds
+        failureThreshold: 10         # Allows 10 attempts (10 * 5s = 50s maximum startup window)
+      livenessProbe:
+        exec:
+          command:
+            - cat
+            - /tmp/started.txt
+        periodSeconds: 10            # Runs only AFTER startupProbe succeeds
+        failureThreshold: 2          # Restarts container if it dies after boot

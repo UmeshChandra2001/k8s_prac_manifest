@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: liveprobe-pod               # Unique name of the Pod
+spec:
+  containers:
+    - name: cont1                   # Name of the container inside the pod
+      image: nginx                  # Base image to run
+      ports:
+        - containerPort: 80         # Exposed port inside the container
+      args:
+        - /bin/sh                   # Shell binary to execute commands
+        - -c                        # Pass the command string to the shell
+        - touch /tmp/umesh.txt; sleep 1000;  # Create marker file and keep container alive
+      livenessProbe:
+        exec:
+          command:
+            - cat                   # Command used to check container health
+            - /tmp/umesh.txt        # Returns exit code 0 if exists, non-zero if missing
+        initialDelaySeconds: 5      # Seconds to wait before running the very first check
+        periodSeconds: 10           # How frequently (in seconds) to repeat the check
+        timeoutSeconds: 30          # Maximum time (in seconds) to wait for probe completion
+        failureThreshold: 2         # Consecutive failed checks required before restarting container

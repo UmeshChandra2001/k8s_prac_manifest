@@ -1,0 +1,48 @@
+mkdir ks
+cd ks/
+vim livenesspod
+ll -a
+rm -rf livenesspod
+vim livenesspod.yaml
+kubectl create -f livenesspod.yaml
+kubectl get po
+kubectl exec -it liveprobe-pod | ll -a /tmp
+kubectl exec -it liveprobe-pod -- ls -la /tmp
+kubectl get pod
+kubectl get pod liveprobe-pod -w
+kubectl exec -it liveprobe-pod -- rm -rf /tmp/umesh.txt
+kubectl get pod liveprobe-pod -w
+kubectl describe po liveprobe-pod
+kubectl get pod
+vim readyprobe-pod.yaml
+ll -a
+vim readyprobe-pod.yaml
+kubectl create -f readyprobe-pod.yaml
+kubectl get po
+kubectl get pod readyprobe-pod
+kubectl describe pod readyprobe-pod
+kubectl exec readyprobe-pod -- ll -a /tmp/ready.txt
+kubectl exec readyprobe-pod -- ls /tmp
+kubectl exec readyprobe-pod -- ll -a /tmp
+kubectl exec readyprobe-pod -- ls -a /tmp
+kubectl exec readyprobe-pod -- rm -f /tmp/ready.txt
+kubectl get pod readyprobe-pod -w
+kubectl describe pod readyprobe-pod
+kubectl get pod readyprobe-pod -w
+kubectl get pod readyprobe-pod
+kubectl exec readyprobe-pod -- touch /tmp/ready.txt
+kubectl get pod readyprobe-pod
+kubectl describe pod readyprobe-pod
+kubectl get pod readyprobe-pod
+kubectl describe pod readyprobe-pod
+kubectl get pod readyprobe-pod
+vim startupprobe-pod.yaml
+kubectl create -f startupprobe-pod.yaml
+kubectl get po startupprobe-pod
+kubectl get pod startupprobe-pod -w
+kubectl describe pod startupprobe-pod
+kubectl exec -it startupprobe-pod -rm -rf /tmp/started.txt
+kubectl exec -it startupprobe-pod -- rm -rf /tmp/started.txt
+kubectl describe pod startupprobe-pod
+kubectl get pod startupprobe-pod
+history
