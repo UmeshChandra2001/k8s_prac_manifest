@@ -1,0 +1,59 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: k8s-ingress                       # Unique name of the Ingress resource
+  namespace: ingress-1                    # Must match the namespace where the backend Services run
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"  # Disable automatic HTTP to HTTPS redirect
+    nginx.ingress.kubernetes.io/use-regex: "true"       # Enable regex matching for paths
+    nginx.ingress.kubernetes.io/rewrite-target: /$2    # Rewrites the URI to the 2nd capture group: (.*)
+spec:
+  ingressClassName: nginx                 # Ingress controller class handling this rule
+  rules:
+    - http:
+        paths:
+          # Train Service Rule: matches /train, /train/, or /train/anything
+          - path: /train(/|$)(.*)
+            pathType: ImplementationSpecific # Required when using regex with ingress-nginx
+            backend:
+              service:
+                name: train               # Target Service name
+                port:
+                  number: 80              # Target Service port
+
+          # Bus Service Rule: matches /bus, /bus/, or /bus/anything
+          - path: /bus(/|$)(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: bus
+                port:
+                  number: 80
+
+          # Flight Service Rule: matches /flight, /flight/, or /flight/anything
+          - path: /flight(/|$)(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: flight
+                port:
+                  number: 80
+
+          # Movies Service Rule: matches /movies, /movies/, or /movies/anything
+          - path: /movies(/|$)(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: movies
+                port:
+                  number: 80
+
+          # Catch-all / Default Fallback Rule
+          - path: /(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: nginx
+                port:
+                  number: 80
